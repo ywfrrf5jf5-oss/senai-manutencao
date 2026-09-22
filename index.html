@@ -359,7 +359,27 @@ function editRecord(id){
   document.querySelector('#dashboard').classList.remove('hidden');document.querySelector('#employee').classList.add('hidden');document.querySelector('#reports').classList.add('hidden');
   window.scrollTo({top:0,behavior:'smooth'});toast('Modo de edição ativado.');
 }
-function deleteRecord(id){if(!confirm('Excluir este registro?'))return;records=records.filter(x=>x.id!==id);saveLocal();renderAll();toast('Registro excluído.')}
+async function deleteRecord(id){
+
+  if(!confirm('Excluir este registro?')){
+    return;
+  }
+
+  const { error } = await banco
+    .from('Registros')
+    .delete()
+    .eq('id', id);
+
+  if(error){
+    console.log(error);
+    alert('Erro ao excluir registro.');
+    return;
+  }
+
+  await carregarBanco();
+
+  toast('Registro excluído.');
+}
 function clearForm(){editingId=null;document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('hours').value=8;document.getElementById('activity').value=''}
 function focusHistory(){document.querySelector('.history').scrollIntoView({behavior:'smooth'})}
 function reportCard(p){
