@@ -200,8 +200,14 @@ function go(id,btn){
   renderAll();
 }
 function selectEmployee(p){
-  selectedEmployee=p;
-  document.getElementById('employeeSelect').value=p;
+  selectedEmployee = p;
+
+  const select = document.getElementById('employeeSelect');
+
+  if(select){
+    select.value = p;
+  }
+
   go('employee');
   renderAll();
 }
