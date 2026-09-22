@@ -253,14 +253,20 @@ function renderAll(){
   document.getElementById('employeeBody').innerHTML=tableRows(pr);
   document.getElementById('dashTabs').innerHTML=PEOPLE.map(p=>`<button class="employee-tab ${p===selectedEmployee?'active':''}" onclick="selectEmployee('${p}')"><b>${initials(p)} &nbsp; ${p}</b><small>${monthRecords(p).length} registros · ${totalHours(monthRecords(p))}h</small></button>`).join('');
   document.getElementById('reportGrid').innerHTML=PEOPLE.map(reportCard).join('');
-  document.getElementById('employeeSelect').innerHTML=PEOPLE.map(p=>`<option ${p===selectedEmployee?'selected':''}>${p}</option>`).join('');
-}
+// const employeeSelect = document.getElementById('employeeSelect');
+
+// if(employeeSelect){
+//     employeeSelect.innerHTML = PEOPLE.map(p =>
+//         `<option ${p===selectedEmployee?'selected':''}>${p}</option>`
+//     ).join('');
+// }
 function tableRows(arr){
   return arr.sort((a,b)=>b.d.localeCompare(a.d)).map(r=>`<tr><td>${fmtDate(r.d)}</td><td>${r.start||'—'} às ${r.end||'—'}</td><td>${r.h}h</td><td>${escapeHtml(r.n)}</td><td class="actions-cell"><button class="icon-btn" onclick="editRecord(${r.id})">✎</button><button class="icon-btn del" onclick="deleteRecord(${r.id})">🗑</button></td></tr>`).join('') || `<tr><td colspan="5" style="color:#8292a7;text-align:center;padding:28px">Nenhum registro neste mês.</td></tr>`;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
   async function saveRecord(){
+    return;
   console.log('SAVE RECORD CLICADO');
 
   const p=document.getElementById('employeeSelect').value;
@@ -360,7 +366,7 @@ function editRecord(id){
   window.scrollTo({top:0,behavior:'smooth'});toast('Modo de edição ativado.');
 }
 async function deleteRecord(id){
-
+console.log('EXCLUIR CLICADO', id);
   if(!confirm('Excluir este registro?')){
     return;
   }
@@ -410,9 +416,9 @@ function toast(msg){
     t.classList.remove('show');
   },1800);
 }
-document.getElementById('employeeSelect').addEventListener('change',e=>{selectedEmployee=e.target.value;renderAll()});
-document.getElementById('empStart').addEventListener('change',updateEmployeeHours);
-document.getElementById('empEnd').addEventListener('change',updateEmployeeHours);
+// document.getElementById('employeeSelect').addEventListener('change',e=>{selectedEmployee=e.target.value;renderAll()});
+// document.getElementById('empStart').addEventListener('change',updateEmployeeHours);
+// document.getElementById('empEnd').addEventListener('change',updateEmployeeHours);
 document.getElementById('date').value=new Date().toISOString().slice(0,10);
 // carregarBanco();
 </script>
