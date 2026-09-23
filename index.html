@@ -253,6 +253,7 @@ function renderAll(){
   document.getElementById('employeeBody').innerHTML=tableRows(pr);
   document.getElementById('dashTabs').innerHTML=PEOPLE.map(p=>`<button class="employee-tab ${p===selectedEmployee?'active':''}" onclick="selectEmployee('${p}')"><b>${initials(p)} &nbsp; ${p}</b><small>${monthRecords(p).length} registros · ${totalHours(monthRecords(p))}h</small></button>`).join('');
   document.getElementById('reportGrid').innerHTML=PEOPLE.map(reportCard).join('');
+  }
 // const employeeSelect = document.getElementById('employeeSelect');
 
 // if(employeeSelect){
@@ -266,7 +267,6 @@ function tableRows(arr){
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
   async function saveRecord(){
-    return;
   console.log('SAVE RECORD CLICADO');
 
   const p=document.getElementById('employeeSelect').value;
@@ -375,7 +375,7 @@ console.log('EXCLUIR CLICADO', id);
     .from('Registros')
     .delete()
     .eq('id', id);
-
+console.log('ERRO:', error);
   if(error){
     console.log(error);
     alert('Erro ao excluir registro.');
@@ -420,7 +420,10 @@ function toast(msg){
 // document.getElementById('empStart').addEventListener('change',updateEmployeeHours);
 // document.getElementById('empEnd').addEventListener('change',updateEmployeeHours);
 document.getElementById('date').value=new Date().toISOString().slice(0,10);
-// carregarBanco();
+carregarBanco();
+
+
+console.log('FIM SCRIPT 1');
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
