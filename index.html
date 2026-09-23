@@ -419,7 +419,9 @@ function toast(msg){
 // document.getElementById('employeeSelect').addEventListener('change',e=>{selectedEmployee=e.target.value;renderAll()});
 // document.getElementById('empStart').addEventListener('change',updateEmployeeHours);
 // document.getElementById('empEnd').addEventListener('change',updateEmployeeHours);
-document.getElementById('date').value=new Date().toISOString().slice(0,10);
+if(document.getElementById('date')){
+    document.getElementById('date').value = new Date().toISOString().slice(0,10);
+}
 carregarBanco();
 
 
