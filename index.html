@@ -122,7 +122,7 @@ textarea{min-height:105px;resize:vertical}
       </div>
       <div class="panel history">
         <div class="panel-title">⌁ Histórico de Registros</div>
-        <div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Horas</th><th>Atividades / Observações</th><th>Ações</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Funcionário</th><th>Horas</th><th>Atividades / Observações</th><th>Ações</th></tr></thead><tbody id="historyBody"></tbody></table></div>
       </div>
     </div>
     <div>
@@ -190,7 +190,7 @@ textarea{min-height:105px;resize:vertical}
 <script>
 const PEOPLE=['Marcos Roberto','Daniel Maurício','Leonardo Ramos','Marcelo Monteiro'];
 const KEY='senai563_mogi_manutencao_v1';
-let selectedEmployee='Daniel Maurício', editingId=null;
+let selectedEmployee=null, editingId=null;
 let records=JSON.parse(localStorage.getItem(KEY)||'[]');
 if(!records.length){
   records=[
@@ -264,7 +264,7 @@ function renderAll(){
   document.getElementById('employeeSelect').innerHTML=PEOPLE.map(p=>`<option ${p===selectedEmployee?'selected':''}>${p}</option>`).join('');
 }
 function tableRows(arr){
-  return arr.sort((a,b)=>b.d.localeCompare(a.d)).map(r=>`<tr><td>${fmtDate(r.d)}</td><td>${r.start||'—'} às ${r.end||'—'}</td><td>${r.h}h</td><td>${escapeHtml(r.n)}</td><td class="actions-cell"><button class="icon-btn" onclick="editRecord(${r.id})">✎</button><button class="icon-btn del" onclick="deleteRecord(${r.id})">🗑</button></td></tr>`).join('') || `<tr><td colspan="5" style="color:#8292a7;text-align:center;padding:28px">Nenhum registro neste mês.</td></tr>`;
+return arr.sort((a,b)=>b.d.localeCompare(a.d)).map(r=>`<tr><td>${fmtDate(r.d)}</td><td>${escapeHtml(r.p)}</td><td>${r.start||'—'} às ${r.end||'—'}</td><td>${r.h}h</td><td>${escapeHtml(r.n)}</td><td class="actions-cell"><button class="icon-btn" onclick="editRecord(${r.id})">✎</button><button class="icon-btn del" onclick="deleteRecord(${r.id})">🗑</button></td></tr>`).join('') || `<tr><td colspan="6" style="color:#8292a7;text-align:center;padding:28px">Nenhum registro neste mês.</td></tr>`;
 }
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
