@@ -161,7 +161,7 @@ textarea{min-height:105px;resize:vertical}
     </div>
     <div class="actions">
       <button class="btn" onclick="clearEmployeeForm()">↻ Limpar</button>
-      <button class="btn primary" onclick="saveEmployeeRecord()">＋ Adicionar Registro</button>
+      <button class="btn primary" onclick="saveEmployeeRecord()"><span id="saveBtnText">+ Adicionar Registro</span></button>
     </div>
   </div>
   <div class="panel"><div class="panel-title">Histórico de <span id="employeeNameInline"></span></div><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Horário</th><th>Horas</th><th>Atividade</th><th>Ações</th></tr></thead><tbody id="employeeBody"></tbody></table></div></div>
@@ -275,6 +275,32 @@ function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
   const d=document.getElementById('date').value;
   const h=Number(document.getElementById('hours').value);
   const n=document.getElementById('activity').value.trim();
+ 
+  if(editingId){
+
+  const { error } = await banco
+    .from('Registros')
+    .update({
+      'funcionário': p,
+      data_servico: d,
+      horas: h,
+      atividade: n
+    })
+    .eq('id', editingId);
+
+  if(error){
+    alert('Erro ao atualizar registro.');
+    return;
+  }
+
+  alert('Registro atualizado!');
+
+  editingId = null;
+  clearEmployeeForm();
+  await carregarBanco();
+
+  return;
+}
 
   if(!d || !n || h < 0){
     alert('Preencha data, horas e atividade.');
@@ -303,6 +329,7 @@ await carregarBanco();
 }
 
 function clearEmployeeForm(){
+  document.getElementById('saveBtnText').textContent = '+ Adicionar Registro';
   editingId=null;
   document.getElementById('empDate').value=new Date().toISOString().slice(0,10);
   document.getElementById('empStart').value='08:00';
@@ -350,8 +377,8 @@ console.log('BOTAO CLICADO');
       }
     ]);
 
-  if(error){
-    console.log(error);
+  if(error){id="date"
+``
     alert('Erro ao salvar no banco.');
     return;
   }
@@ -361,12 +388,14 @@ console.log('BOTAO CLICADO');
 }
 
 function editRecord(id){
-  const r=records.find(x=>x.id===id); if(!r)return;
+  document.getElementById('saveBtnText').textContent = '💾 Salvar Edição';
+  const r=records.find(x=>x.id===id); 
+  if(!r)return;
   editingId=id;selectedEmployee=r.p;
   document.getElementById('employeeSelect').value=r.p;document.getElementById('date').value=r.d;document.getElementById('hours').value=r.h;document.getElementById('activity').value=r.n;
   if(document.getElementById('empDate')){document.getElementById('empDate').value=r.d;document.getElementById('empStart').value=r.start||'08:00';document.getElementById('empEnd').value=r.end||'17:00';document.getElementById('empHoursInput').value=r.h;document.getElementById('empActivity').value=r.n;}
-  document.querySelector('#dashboard').classList.remove('hidden');document.querySelector('#employee').classList.add('hidden');document.querySelector('#reports').classList.add('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});toast('Modo de edição ativado.');
+document.querySelector('#dashboard').classList.add('hidden');
+document.querySelector('#employee').classList.remove('hidden');
 }
 function deleteRecord(id){if(!confirm('Excluir este registro?'))return;records=records.filter(x=>x.id!==id);saveLocal();renderAll();toast('Registro excluído.')}
 function clearForm(){editingId=null;document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('hours').value=8;document.getElementById('activity').value=''}
