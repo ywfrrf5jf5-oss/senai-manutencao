@@ -100,7 +100,7 @@ textarea{min-height:105px;resize:vertical}
 <header class="header"><div class="title">SENAI 5.63 - MOGI GUAÇU - MANUTENÇÃO</div><div class="user"><span>● Sistema local</span></div></header>
 
 <section id="dashboard" class="content">
-  <div class="page-head"><div><h1>Visão Geral</h1><div class="sub">Controle de atividades e horas de manutenção</div></div><div class="month">📅 Setembro/2026</div></div>
+  <div class="page-head"><div><h1>Visão Geral</h1><div class="sub">Controle de atividades e horas de manutenção</div></div><div class="month"><div id="reportBadge"></div><div id="liveClock"></div></div></div>
   <div class="cards">
     <div class="card blue"><div class="card-label">Total de Registros</div><div class="card-value" id="totalRecords">0</div><div class="card-small">este mês</div></div>
     <div class="card green"><div class="card-label">Horas Trabalhadas</div><div class="card-value" id="totalHours">0h</div><div class="card-small">este mês</div></div>
@@ -137,7 +137,7 @@ textarea{min-height:105px;resize:vertical}
       </div>
       <div class="panel" style="display:none; margin-top:20px">
         <div class="panel-title">▤ Relatório Mensal</div>
-        <div class="badge" id="reportBadge">Setembro/2026</div>
+        <div class="badge" id="reportBadge"></div>
         <p class="sub">Relatório individual do funcionário selecionado.</p>
         <div class="report-stats"><div class="stat"><span>Registros</span><b id="sideRecords">0</b></div><div class="stat"><span>Horas</span><b id="sideHours">0h</b></div></div>
         <button class="btn primary" style="width:100%" onclick="openReport(selectedEmployee)">▧ Gerar / Visualizar Relatório</button>
@@ -249,6 +249,10 @@ function renderAll(){
   document.getElementById('totalHours').textContent=totalHours(all).toLocaleString('pt-BR')+'h';
   document.getElementById('totalActivities').textContent=all.length;
   document.getElementById('sideRecords').textContent=pr.length;
+  document.getElementById('reportBadge').textContent =
+new Date()
+.toLocaleDateString('pt-BR',{month:'long',year:'numeric'})
+.replace(/^./, c => c.toUpperCase());
   document.getElementById('sideHours').textContent=totalHours(pr).toLocaleString('pt-BR')+'h';
   document.getElementById('employeeTitle').textContent=selectedEmployee;
   document.getElementById('employeeNameInline').textContent=selectedEmployee;
@@ -529,6 +533,22 @@ async function inserirTeste() {
   }
 
 }
+function atualizarRelogio(){
+  const clock = document.getElementById('liveClock');
+
+  if(clock){
+    const agora = new Date();
+
+    clock.textContent =
+      '🕒 ' +
+      agora.toLocaleDateString('pt-BR') +
+      ' | ' +
+      agora.toLocaleTimeString('pt-BR');
+  }
+}
+
+setInterval(atualizarRelogio, 1000);
+atualizarRelogio();
 </script>
 
 </body>
