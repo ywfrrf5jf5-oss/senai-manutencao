@@ -277,7 +277,6 @@ function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
   const n=document.getElementById('activity').value.trim();
  
   if(editingId){
-
   const { error } = await banco
     .from('Registros')
     .update({
@@ -353,7 +352,6 @@ console.log('BOTAO CLICADO');
   const endTime=document.getElementById('empEnd').value;
   const h=Number(document.getElementById('empHoursInput').value);
   const n=document.getElementById('empActivity').value.trim();
-
   if(!d||!startTime||!endTime||!n){
     alert('Preencha todos os campos.');
     return;
@@ -362,6 +360,31 @@ console.log('BOTAO CLICADO');
   if(endTime<=startTime){
     alert('O horário de término deve ser maior que o horário inicial.');
     return;
+  }
+if(editingId){
+  const { error } = await banco
+    .from('Registros')
+    .update({
+      'funcionário': p,
+      data_servico: d,
+      hora_inicio: startTime,
+      hora_fim: endTime,
+      horas: h,
+      atividade: n
+    })
+    .eq('id', editingId);
+
+  if(error){
+    alert('Erro ao atualizar registro.');
+    return;
+  }
+
+
+  editingId = null;
+  clearEmployeeForm();
+  await carregarBanco();
+
+  return;
   }
 
   const { error } = await banco
@@ -377,7 +400,7 @@ console.log('BOTAO CLICADO');
       }
     ]);
 
-  if(error){id="date"
+  if(error){
 ``
     alert('Erro ao salvar no banco.');
     return;
@@ -397,7 +420,23 @@ function editRecord(id){
 document.querySelector('#dashboard').classList.add('hidden');
 document.querySelector('#employee').classList.remove('hidden');
 }
-function deleteRecord(id){if(!confirm('Excluir este registro?'))return;records=records.filter(x=>x.id!==id);saveLocal();renderAll();toast('Registro excluído.')}
+async function deleteRecord(id){
+  if(!confirm('Excluir este registro?')) return;
+
+  const { error } = await banco
+    .from('Registros')
+    .delete()
+    .eq('id', id);
+
+  if(error){
+    alert('Erro ao excluir registro.');
+    return;
+  }
+
+  await carregarBanco();
+
+  toast('Registro excluído.');
+}
 function clearForm(){editingId=null;document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('hours').value=8;document.getElementById('activity').value=''}
 function focusHistory(){document.querySelector('.history').scrollIntoView({behavior:'smooth'})}
 function reportCard(p){
