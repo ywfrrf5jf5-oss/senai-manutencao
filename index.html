@@ -107,7 +107,7 @@ textarea{min-height:105px;resize:vertical}
     <div class="card purple"><div class="card-label">Atividades Realizadas</div><div class="card-value" id="totalActivities">0</div><div class="card-small">registros</div></div>
     <div class="card orange"><div class="card-label">Relatório Mensal</div><div class="card-value">PDF</div><div class="card-small">gerar / visualizar</div></div>
   </div>
-  <div class="employee-tabs" id="dashTabs"></div>
+  <div class="employee-tabs" id="dashTabs" style="display:none;"></div>
   <div class="grid">
     <div>
       <div class="panel" style="display:none;">
@@ -441,7 +441,7 @@ function clearForm(){editingId=null;document.getElementById('date').value=new Da
 function focusHistory(){document.querySelector('.history').scrollIntoView({behavior:'smooth'})}
 function reportCard(p){
   const r=monthRecords(p),h=totalHours(r);
-  const summary=r.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>x.n).join(' ');
+  const summary=r.slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`${x.p} - ${x.n}`).join(' | ');
   return `<div class="report-card"><div class="report-top"><div style="display:flex;align-items:center;gap:12px"><div class="avatar">${initials(p)}</div><div><h2 style="margin:0;font-size:18px">${p}</h2><span class="badge">Setembro/2026</span></div></div><span style="color:#18c997">●</span></div><div class="report-stats"><div class="stat"><span>Total de registros</span><b>${r.length}</b></div><div class="stat"><span>Horas trabalhadas</span><b>${h}h</b></div></div><div class="report-summary"><b>Resumo:</b><br>${escapeHtml(summary||'Sem registros no período.')}</div><div class="actions"><button class="btn primary" onclick="openReport('${p}')">▧ Gerar / Visualizar</button><button class="btn" onclick="printReport('${p}')">⇩ PDF</button></div></div>`
 }
 function openReport(p){
