@@ -407,6 +407,8 @@ if(editingId){
   }
 
   alert('Registro salvo na nuvem!');
+  await carregarBanco();
+  renderAll();
   clearEmployeeForm();
 }
 
