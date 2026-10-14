@@ -196,7 +196,13 @@ function monthRecords(p=null){return records.filter(r=>r.d.startsWith('2026-09')
 function totalHours(arr){return arr.reduce((a,r)=>a+Number(r.h||0),0)}
 function go(id,btn){
   ['dashboard','employee','reports'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));
-  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active')); if(btn)btn.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+
+  if(id==='dashboard'){
+    selectedEmployee = null;
+  }
+
   renderAll();
 }
 function selectEmployee(p){

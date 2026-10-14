@@ -261,7 +261,7 @@ new Date()
   document.getElementById('empRecords').textContent=pr.length;
   document.getElementById('empHours').textContent=totalHours(pr).toLocaleString('pt-BR')+'h';
   document.getElementById('empActivities').textContent=pr.length;
-  document.getElementById('historyBody').innerHTML=tableRows(pr);
+  document.getElementById('historyBody').innerHTML=tableRows(all);
   document.getElementById('employeeBody').innerHTML=tableRows(pr);
   document.getElementById('dashTabs').innerHTML=PEOPLE.map(p=>`<button class="employee-tab ${p===selectedEmployee?'active':''}" onclick="selectEmployee('${p}')"><b>${initials(p)} &nbsp; ${p}</b><small>${monthRecords(p).length} registros · ${totalHours(monthRecords(p))}h</small></button>`).join('');
   document.getElementById('reportGrid').innerHTML=PEOPLE.map(reportCard).join('');
